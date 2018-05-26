@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+        <div class="container">
+
+            <div class="row">
+              <div class="col">{{ listing.response.numFound }} results</div>
+            </div>
+
+            <div class="row">
+              <div class="filter col-3">
+                {% include 'default/filters.html.twig' with { 'listing': listing } %}
+              </div>
+              <div class="col-9">
+                {% for item in listing.response.docs %}
+                    {% include 'default/list_item.html.twig' with { 'item': item } %}
+                {% endfor %}
+
+                <div class="row">
+                  <div class="col">
+                    {# Paging #}
+                    {% include 'default/paging.html.twig' with { 'listing': listing, 'currentPage': currentPage } %}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+        </div>
+{% endblock %}

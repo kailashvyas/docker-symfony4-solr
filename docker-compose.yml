@@ -1,0 +1,34 @@
+version: '3'
+
+networks:
+  symnet:
+    driver: bridge
+
+services:
+    symfony_web:
+        image: nginx:latest
+        ports:
+            - "83:80"
+        volumes:
+            - ./symfony:/symfony
+            - ./docker/nginx/site.conf:/etc/nginx/conf.d/site.conf
+        depends_on:
+            - symfony_php
+        networks:
+          - symnet
+    symfony_php:
+        build: ./docker/php
+        volumes:
+            - ./symfony:/symfony
+        depends_on:
+          - symfony_solr
+        networks:
+          - symnet
+    symfony_solr:
+        build: docker/solr
+        volumes:
+            - ./symfony:/symfony
+        ports:
+            - "8984:8983"
+        networks:
+          - symnet

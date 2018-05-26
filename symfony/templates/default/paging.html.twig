@@ -1,0 +1,15 @@
+{#
+  build pagination links   
+#}
+{% if listing.response.numFound > 0%}
+    {% set pages = (listing.response.numFound/10)|round %}
+    {% if pages > 0 %}
+        {% for page in 1..pages %}
+            {% if currentPage==page %}
+                <span>{{page}}</span>
+            {% else %}
+                <span><a href="{{ url('homepage', {'page':page, q:app.request.query.get('q', '*.*')}) }}">{{page}}</a>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endif %}

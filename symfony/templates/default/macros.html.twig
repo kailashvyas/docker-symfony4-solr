@@ -1,0 +1,50 @@
+{# filter - process a facet field and display a filter (displayed in left rail) eg attr_genres
+    @param key             title of filter block
+    @param facet           solr facet
+    @param selected_params solr selected_params
+#}
+{% macro filter(key, facet, selected_params) %}
+    <div class="row">
+        <div clas="col-3">
+        <h2>{{ key }}</h2>
+        <ul class="filter">
+        {% for index, value in facet %}
+            {% if index is odd %}
+                ({{ value}})</li>
+            {% else %}
+    			<li><a href="{{ url('homepage', {q: query_builder(selected_params.q, (key), (value) )} ) }}">{{value}}</a>
+            {% endif %}
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+{% endmacro filter %}
+
+{# filter_query - process a facet_query result and display a filter (displayed in left rail) eg &facet.query=budget_i:[0+TO+100]&facet.query=budget_i:[101+TO+10000000]
+    @param title           title of filter block
+    @param facet_queries   solr facet queries
+    @param selected_params solr selected params
+#}
+{% macro filter_query(title, facet_queries, selected_params) %}
+    <div class="row">
+        <div clas="col-3">
+        <h2>{{title}}</h2>
+        <ul class="filter">
+        {% for key, facet in facet_queries %}
+            {% set params = key|split(":") %}
+                <li><a href="{{ url('homepage', {q: query_builder(selected_params.q, params[0], params[1]) } ) }}">{{ key }}</a> ({{facet}})</li>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+{% endmacro filter_query %}
+
+
+{# filter_link - build and display a link with facet field parameters (displayed in search results)
+    @param facet_key   facet key
+    @param facet_value facet value
+#}
+{% macro filter_link(facet_key, facet_value) %}
+    {% set params = (facet_key)~':'~(facet_value|lower) %}
+    <span><a href="{{ url('homepage', {q: params}) }}">{{ facet_value }}</a></span>
+{% endmacro filter_link %}

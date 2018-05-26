@@ -1,0 +1,13 @@
+{% import "default/macros.html.twig" as filters %}
+<div class="row">
+	<div class="col">
+		<h2>{{ item.title_t[0]|default('') }}</h2>
+		<p>{{ item.tagline_t[0]|default('') }}</p>
+		<p>{{ item.overview_t[0]|default('') }}</p>
+		<p>{{ filters.filter_link('status_t', item.status_t[0]|default('')) }}</p>
+		<p>{{ filters.filter_link('adult_b', item.adult_b) }}
+		{% for genre in item.attr_genres %}
+			{{ filters.filter_link('attr_genres', genre) }}
+		{% endfor %}
+	</div>
+</div>

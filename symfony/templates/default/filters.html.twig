@@ -1,0 +1,7 @@
+{% import "default/macros.html.twig" as filters %}
+
+{% for key, facet in listing.facet_counts.facet_fields %}
+    {{ filters.filter(key, facet, listing.responseHeader.params) }}
+{% endfor %}
+
+{{ filters.filter_query('budget_i', listing.facet_counts.facet_queries, listing.responseHeader.params) }}
